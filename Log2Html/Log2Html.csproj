@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<PackageIcon>converter.png</PackageIcon>
+		<ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Assets\Drag-&amp; Drop.png" />
+		<None Remove="Assets\favicon.ico" />
+		<None Remove="Assets\jibini.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Assets\favicon.ico">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Drag-&amp; Drop.png" />
+		<Content Include="Assets\jibini.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Assets\converter.png" />
+		<Resource Include="Assets\favicon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Assets\converter.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Update="settings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ColorPicker\ColorPicker-master\src\ColorPicker\ColorPicker.csproj" />
+	</ItemGroup>
+
+</Project>

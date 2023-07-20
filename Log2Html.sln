@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log2Html", "Log2Html\Log2Html.csproj", "{B6BB632A-E487-4E6B-A23C-74C8A9ABB7E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorPicker", "ColorPicker\ColorPicker-master\src\ColorPicker\ColorPicker.csproj", "{C3DC4F9F-149F-43A2-880D-D24D0E05A7E2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6BB632A-E487-4E6B-A23C-74C8A9ABB7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6BB632A-E487-4E6B-A23C-74C8A9ABB7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6BB632A-E487-4E6B-A23C-74C8A9ABB7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6BB632A-E487-4E6B-A23C-74C8A9ABB7E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3DC4F9F-149F-43A2-880D-D24D0E05A7E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3DC4F9F-149F-43A2-880D-D24D0E05A7E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3DC4F9F-149F-43A2-880D-D24D0E05A7E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3DC4F9F-149F-43A2-880D-D24D0E05A7E2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6C31621-9CC4-4139-889E-F2AEB8DC028A}
+	EndGlobalSection
+EndGlobal
