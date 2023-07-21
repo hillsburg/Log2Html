@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Log2Html.Model
 {
-    public class ColorSetting : INotifyPropertyChanged
+    public class ColorSettingItem : INotifyPropertyChanged
     {
         private string _settingId = System.Guid.NewGuid().ToString("N");
 
@@ -14,7 +14,15 @@ namespace Log2Html.Model
         private bool _shouldApplyForAllLine = true;
 
         private bool _shouldIgnoreCase = false;
+
+        /// <summary>
+        /// ID of setting item
+        /// </summary>
         public string SettingId { get => _settingId; }
+
+        /// <summary>
+        /// Key word
+        /// </summary>
         public string Key
         {
             get => _key;
@@ -24,6 +32,10 @@ namespace Log2Html.Model
                 NotifyPropertyChanged();
             }
         }
+
+        /// <summary>
+        /// Color of the key word
+        /// </summary>
         public string ColorRgb
         {
             get => _colorRgb;
@@ -34,6 +46,9 @@ namespace Log2Html.Model
             }
         }
 
+        /// <summary>
+        /// Should apply for the whole line
+        /// </summary>
         public bool ShouldApplyForAllLine
         {
             get => _shouldApplyForAllLine;
@@ -43,6 +58,10 @@ namespace Log2Html.Model
                 NotifyPropertyChanged();
             }
         }
+
+        /// <summary>
+        /// Should ignore key word case
+        /// </summary>
         public bool ShouldIgnoreCase
         {
             get => _shouldIgnoreCase;
