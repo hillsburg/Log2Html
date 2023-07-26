@@ -24,138 +24,155 @@
         <viewmodel:MainViewVM x:Name="vm" x:FieldModifier="public" />
     </Window.DataContext>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.3*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="0.4*" />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <StackPanel
-                Grid.Row="0"
-                AllowDrop="True"
-                Background="Pink"
-                Drop="File_Drop">
-                <Label
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="拖拽到Pink区域" />
-            </StackPanel>
-            <TextBlock
-                x:Name="txt_log"
-                Grid.Row="1"
-                Margin="5"
-                TextWrapping="Wrap" />
-
-            <StackPanel
-                Grid.Row="2"
-                Margin="5"
-                Background="Gray">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock
-                        Name="txt_html_path"
-                        Margin="5"
-                        Text="HTML Path"
-                        TextWrapping="Wrap" />
-                    <Button
-                        Margin="50"
-                        Click="Open_Click"
-                        Content="Open" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Menu>
+                <MenuItem Command="{Binding}" Header="About" />
+                <MenuItem Header="Update" />
+            </Menu>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="0.4*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Grid.Row="0"
+                    AllowDrop="True"
+                    Background="Pink"
+                    Drop="File_Drop">
+                    <Label
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="拖拽到Pink区域" />
                 </StackPanel>
-            </StackPanel>
-        </Grid>
-        <Grid Grid.Column="1" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button
-                    Grid.Column="0"
+                <TextBlock
+                    x:Name="txt_log"
+                    Grid.Row="1"
                     Margin="5"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Click="Add_Setting"
-                    Content="Add" />
-                <Button
-                    Grid.Column="1"
+                    TextWrapping="Wrap" />
+
+                <StackPanel
+                    Grid.Row="2"
                     Margin="5"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Click="Save_Settings"
-                    Content="Save" />
+                    Background="Gray">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Name="txt_html_path"
+                            Margin="5"
+                            Text="HTML Path"
+                            TextWrapping="Wrap" />
+                        <Button
+                            Margin="50"
+                            HorizontalAlignment="Stretch"
+                            Click="Open_Html_File"
+                            Content="Open File" />
+                        <Button
+                            Margin="50"
+                            Click="Open_Click"
+                            Content="Open" />
+                    </StackPanel>
+                </StackPanel>
             </Grid>
-            <ScrollViewer Grid.Row="1">
-                <ItemsControl
-                    ItemsSource="{Binding ColorSettings}"
-                    ScrollViewer.CanContentScroll="True"
-                    ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="3">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50" />
-                                    <ColumnDefinition Width="0.6*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="0.5*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="30" />
-                                    <ColumnDefinition Width="*" />
-                                    <!--<ColumnDefinition Width="0.4*" />-->
-                                </Grid.ColumnDefinitions>
-                                <Button
-                                    Grid.Column="0"
-                                    Command="{Binding DataContext.RemoveSettingCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                    CommandParameter="{Binding SettingId}"
-                                    Content="X" />
-                                <Label Grid.Column="1" Content="Key word" />
+            <Grid Grid.Column="1" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="0"
+                        Margin="5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Click="Add_Setting"
+                        Content="Add" />
+                    <Button
+                        Grid.Column="1"
+                        Margin="5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Click="Save_Settings"
+                        Content="Save" />
+                </Grid>
+                <ScrollViewer Grid.Row="1">
+                    <ItemsControl
+                        ItemsSource="{Binding ColorSettings}"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="0.6*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="0.5*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="30" />
+                                        <ColumnDefinition Width="*" />
+                                        <!--<ColumnDefinition Width="0.4*" />-->
+                                    </Grid.ColumnDefinitions>
+                                    <Button
+                                        Grid.Column="0"
+                                        Command="{Binding DataContext.RemoveSettingCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                        CommandParameter="{Binding SettingId}"
+                                        Content="X" />
+                                    <Label Grid.Column="1" Content="Key word" />
 
-                                <TextBox
-                                    Grid.Column="2"
-                                    Margin="5"
-                                    FontWeight="Bold"
-                                    Text="{Binding Key}" />
-                                <Label Grid.Column="3" Content="Color" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5"
+                                        FontWeight="Bold"
+                                        Text="{Binding Key}" />
+                                    <Label Grid.Column="3" Content="Color" />
 
-                                <TextBox
-                                    Grid.Column="4"
-                                    Margin="5"
-                                    FontWeight="Bold"
-                                    Text="{Binding ColorRgb}" />
+                                    <TextBox
+                                        Grid.Column="4"
+                                        Margin="5"
+                                        FontWeight="Bold"
+                                        Text="{Binding ColorRgb}" />
 
-                                <Button
-                                    Grid.Column="5"
-                                    Width="30"
-                                    Height="30"
-                                    Background="{Binding ColorRgb, Converter={StaticResource ColorToSolidColorBrushConverter}}" />
+                                    <Button
+                                        Grid.Column="5"
+                                        Width="30"
+                                        Height="30"
+                                        Background="{Binding ColorRgb, Converter={StaticResource ColorToSolidColorBrushConverter}}" />
 
-                                <CheckBox
-                                    Grid.Column="6"
-                                    Margin="5"
-                                    Content="Apply for all line"
-                                    IsChecked="{Binding ShouldApplyForAllLine}" />
-                                <!--<CheckBox
+                                    <CheckBox
+                                        Grid.Column="6"
+                                        Margin="5"
+                                        Content="Apply for all line"
+                                        IsChecked="{Binding ShouldApplyForAllLine}" />
+                                    <!--<CheckBox
                                     Grid.Column="6"
                                     Margin="5"
                                     Content="Ignore Case"
                                     IsChecked="{Binding ShouldIgnoreCase}" />-->
-                                <!--<xctk:ColorPicker Name="ClrPcker_Background" SelectedColorChanged="ClrPcker_Background_SelectedColorChanged" />-->
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Grid>
-        <Grid Grid.Column="2">
-            <colorpicker:StandardColorPicker x:Name="main" Style="{StaticResource DefaultColorPickerStyle}" />
+                                    <!--<xctk:ColorPicker Name="ClrPcker_Background" SelectedColorChanged="ClrPcker_Background_SelectedColorChanged" />-->
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+            <Grid Grid.Column="2">
+                <colorpicker:StandardColorPicker x:Name="main" Style="{StaticResource DefaultColorPickerStyle}" />
+            </Grid>
         </Grid>
     </Grid>
 </Window>
