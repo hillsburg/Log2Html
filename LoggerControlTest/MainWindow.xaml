@@ -1,0 +1,57 @@
+﻿<Window
+    x:Class="LoggerControlTest.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LoggerControlTest"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodel="clr-namespace:LoggerControlTest.ViewModel"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <viewmodel:LogControlTestVM x:Name="vm" />
+    </Window.DataContext>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+        <ItemsControl
+            x:Name="logItemsControl"
+            ItemsSource="{Binding LogItemList}"
+            VirtualizingPanel.VirtualizationMode="Recycling">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <VirtualizingStackPanel Margin="5" Orientation="Horizontal">
+                        <TextBlock Margin="0,0,13,0" Text="{Binding Time}" />
+                        <TextBlock Margin="0,0,13,0" Text="{Binding Category}" />
+                        <TextBlock Margin="0,0,13,0" Text="{Binding Message}" />
+                    </VirtualizingStackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <ScrollViewer
+                        CanContentScroll="True"
+                        Focusable="False"
+                        Loaded="ScrollViewer_Loaded">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <CheckBox x:Name="isAutoScroll" Content="Auto Scroll" />
+            <Button Click="Add_Log" Content="Add_Log" />
+            <Button Click="Add_Log_2000" Content="Add_Log 2000" />
+            <Button Click="Minus_100" Content="Minus_100" />
+        </StackPanel>
+    </Grid>
+</Window>

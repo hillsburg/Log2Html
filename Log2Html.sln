@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log2Html", "Log2Html\Log2Ht
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorPicker", "ColorPicker\ColorPicker-master\src\ColorPicker\ColorPicker.csproj", "{C3DC4F9F-149F-43A2-880D-D24D0E05A7E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Update", "Update\Update.csproj", "{695F852E-C5D9-46B5-8C65-AE0E8C6B41C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Update", "Update\Update.csproj", "{695F852E-C5D9-46B5-8C65-AE0E8C6B41C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerControlTest", "LoggerControlTest\LoggerControlTest.csproj", "{57110DEE-F256-4728-9C5C-440836AA8095}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{695F852E-C5D9-46B5-8C65-AE0E8C6B41C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{695F852E-C5D9-46B5-8C65-AE0E8C6B41C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{695F852E-C5D9-46B5-8C65-AE0E8C6B41C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57110DEE-F256-4728-9C5C-440836AA8095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57110DEE-F256-4728-9C5C-440836AA8095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57110DEE-F256-4728-9C5C-440836AA8095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57110DEE-F256-4728-9C5C-440836AA8095}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
