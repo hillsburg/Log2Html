@@ -12,6 +12,8 @@
 	<ItemGroup>
 		<None Remove="Assets\Drag-&amp; Drop.png" />
 		<None Remove="Assets\favicon.ico" />
+		<None Remove="Assets\iconfont.ttf" />
+		<None Remove="Assets\IMFellDWPicaSCRegular.ttf" />
 		<None Remove="Assets\jibini.png" />
 	</ItemGroup>
 
@@ -28,6 +30,8 @@
 	<ItemGroup>
 		<Resource Include="Assets\converter.png" />
 		<Resource Include="Assets\favicon.ico" />
+		<Resource Include="Assets\iconfont.ttf" />
+		<Resource Include="Assets\IMFellDWPicaSCRegular.ttf" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -48,6 +52,11 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ColorPicker\ColorPicker-master\src\ColorPicker\ColorPicker.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Alg\" />
+	  <Folder Include="Dao\Model\" />
 	</ItemGroup>
 
 </Project>

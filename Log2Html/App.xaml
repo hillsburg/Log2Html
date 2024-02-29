@@ -13,6 +13,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="IconFont">/Log2Html;Component/Assets/#iconfont</FontFamily>
+            <FontFamily x:Key="ImFellDwPicaSc">/Log2Html;Component/Assets/#IM FELL DW Pica SC</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

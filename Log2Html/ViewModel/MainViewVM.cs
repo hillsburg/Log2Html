@@ -1,17 +1,47 @@
-﻿using Log2Html.Model;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Log2Html.Model;
+using Newtonsoft.Json;
 
 namespace Log2Html.ViewModel
 {
-    public class MainViewVM
+    public class MainViewVM : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private string _currentConvertedFilePath;
+
+        /// <summary>
+        /// Key word
+        /// </summary>
+        public string CurrentConvertedFilePath
+        {
+            get => _currentConvertedFilePath;
+            set
+            {
+                _currentConvertedFilePath = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public ICommand RemoveSettingCommand { get; set; }
+        public ICommand OpenHtmlCommand { get; set; }
+
+        public ICommand MenuAboutCommand { get; set; }
+
+
 
         private List<ColorSettingItem> _colorSettings = new List<ColorSettingItem>();
 
@@ -21,6 +51,8 @@ namespace Log2Html.ViewModel
         {
             ColorSettings = new ObservableCollection<ColorSettingItem>();
             RemoveSettingCommand = new RelayCommand(RemoveSettingItem);
+            OpenHtmlCommand = new RelayCommand(OpenFile);
+            MenuAboutCommand = new RelayCommand(ShowAbout);
         }
 
         /// <summary>
@@ -77,16 +109,23 @@ namespace Log2Html.ViewModel
         /// <summary>
         /// Convert txt file into Html
         /// </summary>
-        /// <param name="filePath"></param>
+        /// <param name="filePath">filePath</param>
+        /// <param name="logInfo">logInfo</param>
+        /// <param name="htmlFilePath">htmlFilePath</param>
+        /// <returns></returns>
         public ReturnInfo ConvertFile(string filePath, out string logInfo, out string htmlFilePath)
         {
             logInfo = string.Empty;
             htmlFilePath = string.Empty;
 
             if (string.IsNullOrEmpty(filePath))
+            {
                 return new ReturnInfo(false);
+            }
+
             var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".html";
             htmlFilePath = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath) + newFileName);
+            CurrentConvertedFilePath = htmlFilePath;
             try
             {
                 var lines = File.ReadAllLines(filePath);
@@ -101,7 +140,8 @@ namespace Log2Html.ViewModel
                         {
                             continue;
                         }
-                        // Note that html color differs WPF color. The alpha is the first byte while css is the last byte
+
+                        // Note that html colors differ from WPF color. The alpha is the first byte in WPF while it is the last byte in css
                         var htmlCssColor = item.ColorRgb.StartsWith("#") && item.ColorRgb.Length > 8 ? "#" + item.ColorRgb.Substring(3) + item.ColorRgb.Substring(1, 2) : item.ColorRgb;
                         if (tempLine.Contains(item.Key))
                         {
@@ -152,6 +192,26 @@ namespace Log2Html.ViewModel
                 Key = "",
                 ShouldApplyForAllLine = true,
             });
+        }
+
+        private void OpenFile(object filePath)
+        {
+            var path = (string)filePath;
+            if (!string.IsNullOrEmpty(path))
+            {
+                if (File.Exists(path))
+                {
+                    // System.Diagnostics.Process.Start("explorer.exe", "/select," + filePath);
+                    Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+                }
+            }
+        }
+
+        private void ShowAbout(object filePath)
+        {
+            About about = new About();
+            about.Owner = App.Current.MainWindow;
+            about.Show();
         }
     }
 }

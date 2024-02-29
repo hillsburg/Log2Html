@@ -25,12 +25,15 @@
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel>
             <Menu>
-                <MenuItem Command="{Binding}" Header="About" />
+                <MenuItem
+                    Command="{Binding MenuAboutCommand}"
+                    CommandParameter="{Binding CurrentConvertedFilePath}"
+                    Header="About" />
                 <MenuItem Header="Update" />
             </Menu>
         </StackPanel>
@@ -75,19 +78,14 @@
                     Background="Gray">
                     <StackPanel Orientation="Vertical">
                         <TextBlock
-                            Name="txt_html_path"
                             Margin="5"
-                            Text="HTML Path"
+                            Text="{Binding CurrentConvertedFilePath}"
                             TextWrapping="Wrap" />
                         <Button
                             Margin="50"
-                            HorizontalAlignment="Stretch"
-                            Click="Open_Html_File"
+                            Command="{Binding OpenHtmlCommand}"
+                            CommandParameter="{Binding CurrentConvertedFilePath}"
                             Content="Open File" />
-                        <Button
-                            Margin="50"
-                            Click="Open_Click"
-                            Content="Open" />
                     </StackPanel>
                 </StackPanel>
             </Grid>

@@ -21,7 +21,6 @@ namespace Log2Html
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 var info = vm.ConvertFile(files[0], out var logInfo, out var htmlFilePath);
-                txt_html_path.Text = htmlFilePath;
                 txt_log.Text = logInfo;
             }
         }
