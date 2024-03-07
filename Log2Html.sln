@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorPicker", "ColorPicker\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Update", "Update\Update.csproj", "{695F852E-C5D9-46B5-8C65-AE0E8C6B41C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerControlTest", "LoggerControlTest\LoggerControlTest.csproj", "{57110DEE-F256-4728-9C5C-440836AA8095}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerControlTest", "LoggerControlTest\LoggerControlTest.csproj", "{57110DEE-F256-4728-9C5C-440836AA8095}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeartLog.SimpleDbTool", "HeartLog.DbTool\HeartLog.SimpleDbTool.csproj", "{A1058E15-28F7-493E-8D18-21A5E304B55F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{57110DEE-F256-4728-9C5C-440836AA8095}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57110DEE-F256-4728-9C5C-440836AA8095}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57110DEE-F256-4728-9C5C-440836AA8095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1058E15-28F7-493E-8D18-21A5E304B55F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1058E15-28F7-493E-8D18-21A5E304B55F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1058E15-28F7-493E-8D18-21A5E304B55F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1058E15-28F7-493E-8D18-21A5E304B55F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
