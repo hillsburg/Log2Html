@@ -52,11 +52,11 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ColorPicker\ColorPicker-master\src\ColorPicker\ColorPicker.csproj" />
+	  <ProjectReference Include="..\HeartLog.DbTool\HeartLog.SimpleDbTool.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Alg\" />
-	  <Folder Include="Dao\Model\" />
 	</ItemGroup>
 
 </Project>
