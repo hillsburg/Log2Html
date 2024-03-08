@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Log2Html.Dao;
+using Log2Html.Dao.Model;
 using Log2Html.Model;
 using Newtonsoft.Json;
 
@@ -14,6 +16,8 @@ namespace Log2Html.ViewModel
 {
     public class MainViewVM : INotifyPropertyChanged
     {
+        private DbUtils _dbHelper;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -37,6 +41,7 @@ namespace Log2Html.ViewModel
         }
 
         public ICommand RemoveSettingCommand { get; set; }
+        public ICommand RemoveConvertEntryCommand { get; set; }
         public ICommand OpenHtmlCommand { get; set; }
 
         public ICommand MenuAboutCommand { get; set; }
@@ -46,13 +51,29 @@ namespace Log2Html.ViewModel
         private List<ColorSettingItem> _colorSettings = new List<ColorSettingItem>();
 
         public ObservableCollection<ColorSettingItem> ColorSettings { get; set; } = new ObservableCollection<ColorSettingItem>();
-
+        public ObservableCollection<ConvertEntry> ConvertEntries { get; set; } = new ObservableCollection<ConvertEntry>();
         public MainViewVM()
         {
             ColorSettings = new ObservableCollection<ColorSettingItem>();
             RemoveSettingCommand = new RelayCommand(RemoveSettingItem);
+            RemoveSettingCommand = new RelayCommand(RemoveConvertedEntryItem);
             OpenHtmlCommand = new RelayCommand(OpenFile);
             MenuAboutCommand = new RelayCommand(ShowAbout);
+            _dbHelper = new DbUtils();
+            _dbHelper.Init("Data Source=Log2Html.db");
+            var convertEntries = _dbHelper.DbHelper.DbOperation.Query<ConvertEntryEntity>(null);
+            foreach (var item in convertEntries)
+            {
+                ConvertEntries.Add(new ConvertEntry()
+                {
+                    Id = item.Id,
+                    OriginalFilePath = item.OriginalFilePath,
+                    ConvertedFilePath = item.ConvertedFilePath,
+                    ConvertDate = item.ConvertDate
+                });
+            }
+
+            ConvertEntries.OrderByDescending(x => x.ConvertDate);
         }
 
         /// <summary>
@@ -65,6 +86,19 @@ namespace Log2Html.ViewModel
             var item = ColorSettings.First(x => x.SettingId == id);
             ColorSettings.Remove(item);
         }
+
+        /// <summary>
+        /// delete the item to which the guid equals
+        /// </summary>
+        /// <param name="guid"></param>
+        public void RemoveConvertedEntryItem(object guid)
+        {
+            var id = (string)guid;
+            var item = ConvertEntries.First(x => x.Id == id);
+            _dbHelper.DbHelper.DbOperation.Delete<ConvertEntryEntity>(new ConvertEntryEntity() { Id = id });
+            ConvertEntries.Remove(item);
+        }
+
 
         /// <summary>
         /// Restore config settings from json file
@@ -163,8 +197,10 @@ namespace Log2Html.ViewModel
                             }
                         }
                     }
+
                     newLines.Add(tempLine);
                 }
+
                 newLines.Add($"</body></html>");
 
                 using (var writer = new StreamWriter(htmlFilePath))
@@ -174,7 +210,31 @@ namespace Log2Html.ViewModel
                         writer.WriteLine(item);
                     }
                 }
+
                 logInfo = "Perfect!";
+
+                var id = new Guid().ToString();
+                var convertedTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                // DB Operation
+                _dbHelper.DbHelper.DbOperation.Insert<ConvertEntryEntity>(new ConvertEntryEntity()
+                {
+                    Id = id,
+                    OriginalFilePath = filePath,
+                    ConvertedFilePath = htmlFilePath,
+                    ConvertDate = convertedTime
+                });
+
+                // UI operation
+                ConvertEntries.Add(new ConvertEntry()
+                {
+                    Id = id,
+                    OriginalFilePath = filePath,
+                    ConvertedFilePath = htmlFilePath,
+                    ConvertDate = convertedTime
+                });
+
+                ConvertEntries.OrderByDescending(x => x.ConvertDate);
+
                 return new ReturnInfo(true);
             }
             catch (Exception ex)

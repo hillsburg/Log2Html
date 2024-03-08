@@ -1,10 +1,10 @@
-﻿using HeartLog.SimpleDbTool.Attribute;
+﻿using System.Data;
+using System.Data.Common;
+using HeartLog.SimpleDbTool.Attribute;
 using HeartLog.SimpleDbTool.Enum;
 using HeartLog.SimpleDbTool.Interface;
 using HeartLog.SimpleDbTool.SimpleORM;
 using Microsoft.Data.SqlClient;
-using System.Data;
-using System.Data.Common;
 
 namespace HeartLog.SimpleDbTool.SimpleDbServer
 {
@@ -248,6 +248,12 @@ namespace HeartLog.SimpleDbTool.SimpleDbServer
             {
                 return resultList;
             }
+        }
+
+        public List<T> Query<T>(T t) where T : ISimpleOrm, new()
+        {
+            var sql = SimpleOrmCore.GenerateSelectSql(t);
+            return ExecuteReaderGetList<T>(sql);
         }
     }
 }

@@ -17,6 +17,8 @@ namespace HeartLog.SimpleDbTool.Interface
 
         bool Insert<T>(T t) where T : ISimpleOrm;
 
+        List<T> Query<T>(T t) where T : ISimpleOrm, new();
+
         /// <summary>
         /// 通过DataReader读取数据并且返回数据集合
         /// </summary>

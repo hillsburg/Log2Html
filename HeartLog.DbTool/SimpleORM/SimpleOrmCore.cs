@@ -1,7 +1,7 @@
-﻿using HeartLog.SimpleDbTool.Attribute;
+﻿using System.Text;
+using HeartLog.SimpleDbTool.Attribute;
 using HeartLog.SimpleDbTool.Enum;
 using HeartLog.SimpleDbTool.Interface;
-using System.Text;
 
 namespace HeartLog.SimpleDbTool.SimpleORM
 {
@@ -125,13 +125,19 @@ namespace HeartLog.SimpleDbTool.SimpleORM
                         if (columnType == ColumnType.INTEGER)
                         {
                             if (prop.GetValue(model) == null)
+                            {
                                 return string.Empty;
+                            }
+
                             delSqlStr.Append(prop.GetValue(model)?.ToString() + " AND ");
                         }
                         else
                         {
                             if (prop.GetValue(model) == null)
+                            {
                                 return string.Empty;
+                            }
+
                             delSqlStr.Append("'" + prop.GetValue(model)?.ToString() + "'" + " AND ");
                         }
                     }
@@ -163,7 +169,10 @@ namespace HeartLog.SimpleDbTool.SimpleORM
             selectSqlStr.Append("SELECT * FROM ");
             var tableName = ((TableAttribute)tableAttrs[0]).TableName;
             if (model == null)
+            {
                 return $"SELECT * FROM {tableName}";
+            }
+
             selectSqlStr.Append(tableName + " WHERE ");
 
             // Find Primary Key

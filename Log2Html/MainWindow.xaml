@@ -93,6 +93,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -174,6 +175,38 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+
+                <ItemsControl
+                    Grid.Row="2"
+                    Margin="0,10,0,0"
+                    ItemsSource="{Binding ConvertEntries}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding OriginalFilePath}" />
+                                <TextBlock Grid.Column="1" Text="{Binding ConvertedFilePath}" />
+                                <TextBlock Grid.Column="2" Text="{Binding ConvertDate}" />
+                                <Button
+                                    Grid.Column="3"
+                                    Command="{Binding DataContext.OpenHtmlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                    CommandParameter="{Binding ConvertedFilePath}"
+                                    Content="Open" />
+                                <Button
+                                    Grid.Column="4"
+                                    Command="{Binding DataContext.RemoveConvertEntryCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                    CommandParameter="{Binding Id}"
+                                    Content="X" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Grid>
             <Grid Grid.Column="2">
                 <colorpicker:StandardColorPicker x:Name="main" Style="{StaticResource DefaultColorPickerStyle}" />
