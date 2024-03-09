@@ -10,6 +10,9 @@ namespace Log2Html.Dao.Model
         [Column("id", false, true, ColumnType.TEXT)]
         public string Id { get; set; }
 
+        [Column("file_name_alias", ColumnType.TEXT)]
+        public string FileNameAlias { get; set; }
+
         [Column("original_file_path", ColumnType.TEXT)]
         public string OriginalFilePath { get; set; }
 

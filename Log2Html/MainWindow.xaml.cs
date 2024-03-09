@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Log2Html
 {
@@ -46,10 +48,34 @@ namespace Log2Html
             vm.SaveSettings(_configFilePath);
         }
 
-        private void Open_Html_File(object sender, RoutedEventArgs e)
+        private void FileNameAlias_TextBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //System.Diagnostics.Process.Start(txt_html_path.Text);
-            System.Diagnostics.Process.Start(@"D:\\CODE\\NEWest\\automotiveota\\code\\GTS.MaxSign_bin\\Result\\GPS L1\\004008001_20230724105829\\Test20230725110454.html");
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                textBox.IsReadOnly = false;
+            }
+        }
+
+        private void FileNameAliasLostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                textBox.IsReadOnly = true;
+            }
+        }
+
+        private void FilaNameAliasKeyDown(object sender, KeyEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                if (e.Key == Key.Enter)
+                {
+                    textBox.IsReadOnly = true;
+                }
+            }
         }
     }
 }
