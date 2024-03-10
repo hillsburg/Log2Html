@@ -31,11 +31,12 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <Menu>
+                <MenuItem Header="Setting" />
+                <MenuItem Header="Update" />
                 <MenuItem
                     Command="{Binding MenuAboutCommand}"
                     CommandParameter="{Binding CurrentConvertedFilePath}"
                     Header="About" />
-                <MenuItem Header="Update" />
             </Menu>
         </StackPanel>
         <Grid Grid.Row="1">
