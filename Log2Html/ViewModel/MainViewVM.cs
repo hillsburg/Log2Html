@@ -1,8 +1,4 @@
-﻿using Log2Html.Dao;
-using Log2Html.Dao.Model;
-using Log2Html.Model;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,6 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Log2Html.Dao;
+using Log2Html.Dao.Model;
+using Log2Html.Model;
+using Newtonsoft.Json;
 
 namespace Log2Html.ViewModel
 {
@@ -275,12 +275,7 @@ namespace Log2Html.ViewModel
 
         public void AddSettingItem()
         {
-            ColorSettings.Add(new ColorSettingItem()
-            {
-                ColorRgb = "",
-                Key = "",
-                ShouldApplyForAllLine = true,
-            });
+            ColorSettings.Add(new ColorSettingItem());
         }
 
         private void OpenFile(object filePath)

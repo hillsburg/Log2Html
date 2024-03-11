@@ -9,7 +9,7 @@ namespace Log2Html.Model
 
         private string _key;
 
-        private string _colorRgb = "#00000000";
+        private string _colorRgb = "#FF00D5FF";
 
         private bool _shouldApplyForAllLine = true;
 
