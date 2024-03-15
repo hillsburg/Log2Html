@@ -60,6 +60,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Alg\" />
+	  <Folder Include="Utils\" />
 	</ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using Log2Html.Dao;
 using Log2Html.Dao.Model;
@@ -50,6 +51,10 @@ namespace Log2Html.ViewModel
 
         public ICommand MenuAboutCommand { get; set; }
 
+        public ICommand EntryItemDeleteCommand { get; set; }
+
+        public ICommand EntryItemOpenOriginalFileCommand { get; set; }
+
 
 
         private List<ColorSettingItem> _colorSettings = new List<ColorSettingItem>();
@@ -62,8 +67,11 @@ namespace Log2Html.ViewModel
             RemoveSettingCommand = new RelayCommand(RemoveSettingItem);
             RemoveConvertEntryCommand = new RelayCommand(RemoveConvertedEntryItem);
             FileAliasChangesCommand = new RelayCommand(FileAliasChanged);
-            OpenHtmlCommand = new RelayCommand(OpenFile);
+            OpenHtmlCommand = new RelayCommand(OpenFileInBrowser);
+            EntryItemOpenOriginalFileCommand = new RelayCommand(OpenFileInFileExplorer);
+            EntryItemDeleteCommand = new RelayCommand(DeleteEntryItem);
             MenuAboutCommand = new RelayCommand(ShowAbout);
+
             _dbHelper = new DbUtils();
             _dbHelper.Init("Data Source=Log2Html.db");
             var convertEntries = _dbHelper.DbHelper.DbOperation.Query<ConvertEntryEntity>(null);
@@ -101,6 +109,11 @@ namespace Log2Html.ViewModel
         {
             var id = (string)guid;
             var item = ConvertEntries.First(x => x.Id == id);
+            if (item == null)
+            {
+                return;
+            }
+
             _dbHelper.DbHelper.DbOperation.Delete<ConvertEntryEntity>(new ConvertEntryEntity() { Id = id });
             ConvertEntries.Remove(item);
         }
@@ -111,8 +124,17 @@ namespace Log2Html.ViewModel
         /// <param name="guid"></param>
         public void FileAliasChanged(object guid)
         {
+            if (guid == null)
+            {
+                return;
+            }
+
             var id = (string)guid;
             var item = ConvertEntries.First(x => x.Id == id);
+            if (item == null)
+            {
+                return;
+            }
 
             var dbModel = new ConvertEntryEntity()
             {
@@ -197,6 +219,11 @@ namespace Log2Html.ViewModel
                 foreach (var line in lines)
                 {
                     var tempLine = line;
+
+                    // replace < and > to avoid html tag
+                    tempLine = tempLine.Replace("<", "&lt;");
+                    tempLine = tempLine.Replace(">", "&gt;");
+
                     foreach (var item in ColorSettings)
                     {
                         if (string.IsNullOrEmpty(item.Key) || string.IsNullOrWhiteSpace(item.Key))
@@ -204,15 +231,22 @@ namespace Log2Html.ViewModel
                             continue;
                         }
 
+                        // replace < and > to avoid html tag
+                        var key = item.Key.Replace("<", "&lt;");
+                        key = key.Replace(">", "&gt;");
+
                         // Note that html colors differ from WPF color. The alpha is the first byte in WPF while it is the last byte in css
                         var htmlCssColor = item.ColorRgb.StartsWith("#") && item.ColorRgb.Length > 8 ? "#" + item.ColorRgb.Substring(3) + item.ColorRgb.Substring(1, 2) : item.ColorRgb;
-                        if (tempLine.Contains(item.Key))
+                        if (tempLine.Contains(key))
                         {
                             if (item.ShouldApplyForAllLine)
                             {
                                 if (tempLine.StartsWith("<p"))
                                 {
+                                    // remove the style of old p tag
                                     var substr = tempLine.Substring(0, tempLine.IndexOf(">") + 1);
+
+                                    // add new style
                                     tempLine = tempLine.Replace(substr, $"<p style=\"color:{htmlCssColor};\">");
                                 }
                                 else
@@ -222,7 +256,7 @@ namespace Log2Html.ViewModel
                             }
                             else
                             {
-                                tempLine = $"<p>{tempLine.Replace(item.Key, $"<span style=\"color: {htmlCssColor};\">{item.Key}</span>")}</p>";
+                                tempLine = $"<p>{tempLine.Replace(key, $"<span style=\"color: {htmlCssColor};\">{key}</span>")}</p>";
                             }
                         }
                     }
@@ -278,7 +312,7 @@ namespace Log2Html.ViewModel
             ColorSettings.Add(new ColorSettingItem());
         }
 
-        private void OpenFile(object filePath)
+        private void OpenFileInBrowser(object filePath)
         {
             var path = (string)filePath;
             if (!string.IsNullOrEmpty(path))
@@ -288,6 +322,33 @@ namespace Log2Html.ViewModel
                     // System.Diagnostics.Process.Start("explorer.exe", "/select," + filePath);
                     Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
                 }
+            }
+        }
+
+        private void OpenFileInFileExplorer(object filePath)
+        {
+            var path = (string)filePath;
+            if (!string.IsNullOrEmpty(path))
+            {
+                if (File.Exists(path))
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", "/select," + filePath);
+                }
+            }
+        }
+
+        private void DeleteEntryItem(object id)
+        {
+            if (id == null)
+            {
+                return;
+            }
+
+            MessageBoxResult result = MessageBox.Show("Are you sure to delete this item?", "Delete", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                var guid = (string)id;
+                ConvertEntries.Remove(ConvertEntries.First(x => x.Id == guid));
             }
         }
 
