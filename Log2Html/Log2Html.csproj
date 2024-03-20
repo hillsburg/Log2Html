@@ -40,7 +40,7 @@
 			<PackagePath>\</PackagePath>
 		</None>
 		<None Update="Log2Html.db">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="settings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -54,13 +54,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\ColorPicker\ColorPicker-master\src\ColorPicker\ColorPicker.csproj" />
-	  <ProjectReference Include="..\HeartLog.DbTool\HeartLog.SimpleDbTool.csproj" />
+		<ProjectReference Include="..\ColorPicker\ColorPicker-master\src\ColorPicker\ColorPicker.csproj" />
+		<ProjectReference Include="..\HeartLog.DbTool\HeartLog.SimpleDbTool.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Alg\" />
-	  <Folder Include="Utils\" />
+		<Folder Include="Alg\" />
+		<Folder Include="Utils\" />
 	</ItemGroup>
 
 </Project>

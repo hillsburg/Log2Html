@@ -5,18 +5,29 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Log2Html"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Log2Html.Model"
+    xmlns:vm="clr-namespace:Log2Html.ViewModel"
     Title="About"
     Width="500"
     Height="500"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:AboutViewModel x:Name="Vm" />
+    </Window.DataContext>
     <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <TextBlock
+            Margin="10"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             FontFamily="{StaticResource ImFellDwPicaSc}"
-            FontSize="22"
+            FontSize="20"
             TextTrimming="WordEllipsis"
             TextWrapping="Wrap">
             Firstly I would like to express my great thanks to a person without whom this application would not have been possible.<LineBreak /><LineBreak />
@@ -25,5 +36,32 @@
             <LineBreak />
             The source code is available on GitHub at<Hyperlink NavigateUri="https://github.com/hillsburg/Log2Html" ToolTip="https://github.com/hillsburg/Log2Html">Here</Hyperlink>
         </TextBlock>
+        <StackPanel
+            Grid.Row="1"
+            Margin="10"
+            Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontFamily="{StaticResource ImFellDwPicaSc}"
+                    FontSize="20"
+                    Text="Current version:" />
+                <TextBlock
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontFamily="{StaticResource ImFellDwPicaSc}"
+                    FontSize="20"
+                    Foreground="DeepPink"
+                    Text="{Binding AppVersion}" />
+            </StackPanel>
+            <StackPanel Margin="0,5,0,0">
+                <Button
+                    Command="{Binding OpenUrlCommand}"
+                    CommandParameter="{Binding AppVersion}"
+                    Content="GO &amp; Check Version !" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

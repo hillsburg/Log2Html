@@ -107,15 +107,24 @@ namespace Log2Html.ViewModel
         /// <param name="guid"></param>
         public void RemoveConvertedEntryItem(object guid)
         {
-            var id = (string)guid;
-            var item = ConvertEntries.First(x => x.Id == id);
-            if (item == null)
+            if (guid == null)
             {
                 return;
             }
 
-            _dbHelper.DbHelper.DbOperation.Delete<ConvertEntryEntity>(new ConvertEntryEntity() { Id = id });
-            ConvertEntries.Remove(item);
+            MessageBoxResult result = MessageBox.Show("Are you sure to delete this item?", "Delete", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                var id = (string)guid;
+                var item = ConvertEntries.First(x => x.Id == id);
+                if (item == null)
+                {
+                    return;
+                }
+
+                _dbHelper.DbHelper.DbOperation.Delete<ConvertEntryEntity>(new ConvertEntryEntity() { Id = id });
+                ConvertEntries.Remove(item);
+            }
         }
 
         /// <summary>
