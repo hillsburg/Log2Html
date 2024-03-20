@@ -37,7 +37,7 @@ namespace Log2Html.ViewModel
 
         private void OpenUrl(object obj)
         {
-            string url = "https://github.com/hillsburg/Log2Html";
+            string url = "https://github.com/hillsburg/Log2Html/releases";
             Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         }
 
