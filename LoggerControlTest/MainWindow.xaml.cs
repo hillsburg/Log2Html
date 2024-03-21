@@ -1,7 +1,7 @@
-﻿using LoggerControlTest.Model;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using LoggerControlTest.Model;
 
 namespace LoggerControlTest
 {
@@ -32,7 +32,7 @@ namespace LoggerControlTest
         private void Add_Log_2000(object sender, EventArgs e)
         {
             int i = 0;
-            while (i < 200000)
+            while (i < 2000)
             {
                 i++;
                 vm.LogItemList.Add(new LogItemModel()

@@ -1,0 +1,59 @@
+﻿<UserControl
+    x:Class="HeartLog.ControlLib.Logger.LoggerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:HeartLog.ControlLib.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:HeartLog.ControlLib.Logger"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:HeartLog.ControlLib.Logger.ViewModel"
+    d:DesignHeight="450"
+    mc:Ignorable="d">
+    <d:UserControl.DesignWidth>800</d:UserControl.DesignWidth>
+    <UserControl.DataContext>
+        <viewModel:LoggerControlVM x:Name="Vm" />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:Enum2ColorRgbConverter x:Key="Enum2ColorRgbConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ItemsControl
+            x:Name="logItemsControl"
+            Grid.Row="0"
+            ItemsSource="{Binding LogItemList}"
+            VirtualizingPanel.VirtualizationMode="Recycling">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <VirtualizingStackPanel Margin="5" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,13,0"
+                            Foreground="{Binding LogLevel, Converter={StaticResource Enum2ColorRgbConverter}}"
+                            Text="{Binding TimeStamp}" />
+                        <TextBlock
+                            Margin="0,0,13,0"
+                            Foreground="{Binding LogLevel, Converter={StaticResource Enum2ColorRgbConverter}}"
+                            Text="{Binding LogContent}" />
+                    </VirtualizingStackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <ScrollViewer
+                        CanContentScroll="True"
+                        Focusable="False">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
+    </Grid>
+</UserControl>

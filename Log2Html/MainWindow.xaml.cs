@@ -15,6 +15,8 @@ namespace Log2Html
         {
             InitializeComponent();
             vm.RestoreSettings(_configFilePath);
+
+            // get logger
         }
 
         private void File_Drop(object sender, DragEventArgs e)
@@ -23,7 +25,6 @@ namespace Log2Html
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 var info = vm.ConvertFile(files[0], out var logInfo, out var htmlFilePath);
-                txt_log.Text = logInfo;
             }
         }
 

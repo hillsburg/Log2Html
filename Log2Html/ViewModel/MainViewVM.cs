@@ -10,7 +10,9 @@ using System.Windows;
 using System.Windows.Input;
 using Log2Html.Dao;
 using Log2Html.Dao.Model;
+using Log2Html.Enum;
 using Log2Html.Model;
+using Log2Html.Utils;
 using Newtonsoft.Json;
 
 namespace Log2Html.ViewModel
@@ -55,7 +57,17 @@ namespace Log2Html.ViewModel
 
         public ICommand EntryItemOpenOriginalFileCommand { get; set; }
 
+        public ObservableCollection<LogItem> LogItemList { get; set; } = new();
 
+        public void AddLog(LogItem logItem)
+        {
+            LogItemList.Add(logItem);
+        }
+
+        public void ClearLog()
+        {
+            LogItemList.Clear();
+        }
 
         private List<ColorSettingItem> _colorSettings = new List<ColorSettingItem>();
 
@@ -87,7 +99,6 @@ namespace Log2Html.ViewModel
                     ConvertDate = item.ConvertDate
                 });
             }
-
         }
 
         /// <summary>
@@ -217,7 +228,7 @@ namespace Log2Html.ViewModel
                 return new ReturnInfo(false);
             }
 
-            var newFileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".html";
+            var newFileName = DateTime.Now.ToString("_yyyyMMddHHmmss") + ".html";
             htmlFilePath = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath) + newFileName);
             CurrentConvertedFilePath = htmlFilePath;
             try
@@ -284,15 +295,18 @@ namespace Log2Html.ViewModel
                 }
 
                 logInfo = "Perfect!";
+                AddLog(LogLevel.Info, logInfo, LogDestination.DispalyAndLogFile);
+
                 var id = Guid.NewGuid().ToString();
                 var convertedTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
+                var fileName = Path.GetFileNameWithoutExtension(htmlFilePath);
                 // DB Operation
                 _dbHelper.DbHelper.DbOperation.Insert<ConvertEntryEntity>(new ConvertEntryEntity()
                 {
                     Id = id,
                     OriginalFilePath = filePath,
-                    FileNameAlias = Path.GetFileNameWithoutExtension(htmlFilePath),
+                    FileNameAlias = fileName.Substring(0, fileName.LastIndexOf('_')),
                     ConvertedFilePath = htmlFilePath,
                     ConvertDate = convertedTime
                 });
@@ -301,7 +315,7 @@ namespace Log2Html.ViewModel
                 ConvertEntries.Insert(0, new ConvertEntry()
                 {
                     Id = id,
-                    FileNameAlias = Path.GetFileNameWithoutExtension(htmlFilePath),
+                    FileNameAlias = fileName.Substring(0, fileName.LastIndexOf('_')),
                     OriginalFilePath = filePath,
                     ConvertedFilePath = htmlFilePath,
                     ConvertDate = convertedTime
@@ -312,6 +326,7 @@ namespace Log2Html.ViewModel
             catch (Exception ex)
             {
                 logInfo = $"哦豁！不得行！你看：{ex.Message}";
+                AddLog(LogLevel.Error, logInfo, LogDestination.DispalyAndLogFile);
                 return new ReturnInfo(false, ex.Message, 0);
             }
         }
@@ -366,6 +381,40 @@ namespace Log2Html.ViewModel
             About about = new About();
             about.Owner = App.Current.MainWindow;
             about.Show();
+        }
+
+        private void AddLog(LogLevel logLevel, string message, LogDestination destination)
+        {
+            switch (destination)
+            {
+                case LogDestination.DispalyAndLogFile:
+                    AddLog(new LogItem()
+                    {
+                        TimeStamp = DateTime.Now.ToShortTimeString(),
+                        LogLevel = logLevel,
+                        LogContent = message,
+                        Destination = destination
+                    });
+                    LogHelper.AddLog(logLevel, message);
+                    break;
+
+                case LogDestination.OnlyLogFile:
+                    LogHelper.AddLog(logLevel, message);
+                    break;
+
+                case LogDestination.OnlyDispaly:
+                    AddLog(new LogItem()
+                    {
+                        TimeStamp = DateTime.Now.ToShortTimeString(),
+                        LogLevel = logLevel,
+                        LogContent = message,
+                        Destination = destination
+                    });
+                    break;
+                default:
+                    throw new ArgumentException("Unknown log destination");
+            }
+
         }
     }
 }
