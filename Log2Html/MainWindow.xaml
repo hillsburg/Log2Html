@@ -334,50 +334,69 @@
                     </ItemsControl.Template>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="3,3,3,3" VerticalAlignment="Center">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBox
-                                    Grid.Column="0"
-                                    MinWidth="200"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    IsReadOnly="{Binding IsReadOnly}"
-                                    MouseDoubleClick="FileNameAlias_TextBox_MouseDoubleClick"
-                                    Text="{Binding FileNameAlias, Mode=TwoWay}">
-                                    <b:Interaction.Triggers>
-                                        <b:EventTrigger EventName="LostFocus">
-                                            <b:InvokeCommandAction Command="{Binding DataContext.FileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Id}" />
-                                        </b:EventTrigger>
-                                        <b:EventTrigger EventName="KeyDown">
-                                            <b:InvokeCommandAction Command="{Binding DataContext.FileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Id}" />
-                                        </b:EventTrigger>
-                                    </b:Interaction.Triggers>
-                                </TextBox>
-                                <TextBlock
-                                    Grid.Column="1"
-                                    MinWidth="160"
-                                    Margin="10,0,10,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding ConvertDate}" />
-                                <Button
-                                    Grid.Column="2"
-                                    Width="100"
-                                    Margin="10,0,10,0"
-                                    Command="{Binding DataContext.OpenHtmlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                    CommandParameter="{Binding ConvertedFilePath}"
-                                    Content="Open" />
-                                <Button
-                                    Grid.Column="3"
-                                    Width="60"
-                                    Command="{Binding DataContext.RemoveConvertEntryCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                    CommandParameter="{Binding Id}"
-                                    Content="X" />
-                            </Grid>
+                            <Border
+                                Margin="3"
+                                BorderBrush="#FFDDD9D9"
+                                BorderThickness="0.5"
+                                CornerRadius="3">
+                                <Grid Margin="3,3,3,3" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox
+                                        Grid.Column="0"
+                                        MinWidth="200"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        IsReadOnly="{Binding IsReadOnly}"
+                                        MouseDoubleClick="FileNameAlias_TextBox_MouseDoubleClick"
+                                        Text="{Binding FileNameAlias, Mode=TwoWay}">
+                                        <b:Interaction.Triggers>
+                                            <b:EventTrigger EventName="LostFocus">
+                                                <b:InvokeCommandAction Command="{Binding DataContext.FileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Id}" />
+                                            </b:EventTrigger>
+                                            <b:EventTrigger EventName="KeyDown">
+                                                <b:InvokeCommandAction Command="{Binding DataContext.FileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Id}" />
+                                            </b:EventTrigger>
+                                        </b:Interaction.Triggers>
+                                    </TextBox>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        MinWidth="160"
+                                        Margin="10,0,10,0"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding ConvertDate}">
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem
+                                                    Command="{Binding DataContext.EntryItemOpenOriginalFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                                    CommandParameter="{Binding OriginalFilePath}"
+                                                    Header="Open original file path" />
+                                                <MenuItem
+                                                    Command="{Binding DataContext.EntryItemOpenOriginalFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                                    CommandParameter="{Binding ConvertedFilePath}"
+                                                    Header="Open converted file path" />
+                                            </ContextMenu>
+                                        </TextBlock.ContextMenu>
+                                    </TextBlock>
+                                    <Button
+                                        Grid.Column="2"
+                                        Width="100"
+                                        Margin="10,0,10,0"
+                                        Command="{Binding DataContext.OpenHtmlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                        CommandParameter="{Binding ConvertedFilePath}"
+                                        Content="Open" />
+                                    <Button
+                                        Grid.Column="3"
+                                        Width="60"
+                                        Command="{Binding DataContext.RemoveConvertEntryCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                        CommandParameter="{Binding Id}"
+                                        Content="X" />
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
