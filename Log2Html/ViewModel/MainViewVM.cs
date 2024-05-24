@@ -352,12 +352,10 @@ namespace Log2Html.ViewModel
         private void OpenFileInFileExplorer(object filePath)
         {
             var path = (string)filePath;
-            if (!string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path)) return;
+            if (File.Exists(path))
             {
-                if (File.Exists(path))
-                {
-                    System.Diagnostics.Process.Start("explorer.exe", "/select," + filePath);
-                }
+                Process.Start("explorer.exe", "/select," + filePath);
             }
         }
 

@@ -93,7 +93,7 @@
                     Background="Orange" />
 
                 <ItemsControl
-                    x:Name="logItemsControl"
+                    x:Name="LogItemsControl"
                     Grid.Row="2"
                     ItemsSource="{Binding LogItemList}"
                     VirtualizingPanel.VirtualizationMode="Recycling">
@@ -152,8 +152,89 @@
                         Click="Save_Settings"
                         Content="Save" />
                 </Grid>
+                <DataGrid Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          ItemsSource="{Binding ColorSettings}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Key Word" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Color RGB" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding ColorRgb, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Preview" Width="0.8*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Width="30"
+                                        Height="30"
+                                        Background="{Binding ColorRgb, Converter={StaticResource Rgb2SolidColorBrushConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Apply for All Line" Width="*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        IsChecked="{Binding ShouldApplyForAllLine}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Ignore Case" Width="*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        IsChecked="{Binding ShouldIgnoreCase}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Delete" Width="0.8*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Command="{Binding DataContext.RemoveSettingCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding SettingId}"
+                                        Content="X" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding ColorSettings}">
+                <!--<ItemsControl Grid.Row="1" ItemsSource="{Binding ColorSettings}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling" />
@@ -175,7 +256,9 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="30" />
                                         <ColumnDefinition Width="*" />
-                                        <!--<ColumnDefinition Width="0.4*" />-->
+                                        -->
+                <!--<ColumnDefinition Width="0.4*" />-->
+                <!--
                                     </Grid.ColumnDefinitions>
                                     <Button
                                         Grid.Column="0"
@@ -229,7 +312,7 @@
                             </ScrollViewer>
                         </ControlTemplate>
                     </ItemsControl.Template>
-                </ItemsControl>
+                </ItemsControl>-->
 
                 <Grid Grid.Row="2" Margin="3,20,0,3">
                     <TextBlock
@@ -238,7 +321,7 @@
                         Text="Records" />
                 </Grid>
 
-                <!--
+
                 <DataGrid
                     Grid.Row="3"
                     AutoGenerateColumns="False"
@@ -289,7 +372,7 @@
                         <DataGridTemplateColumn Header="Convert Date">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ConvertDate, Mode=TwoWay}" />
+                                    <TextBlock Text="{Binding ConvertDate}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -307,7 +390,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button
-                                        Command="{Binding DataContext.EntryItemDeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        Command="{Binding DataContext.RemoveConvertEntryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                         CommandParameter="{Binding Id}"
                                         Content="X" />
                                 </DataTemplate>
@@ -315,8 +398,9 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                -->
-                <ItemsControl
+
+
+                <!--<ItemsControl
                     Grid.Row="3"
                     Margin="0,10,0,0"
                     ItemsSource="{Binding ConvertEntries}">
@@ -399,7 +483,7 @@
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                </ItemsControl>-->
             </Grid>
             <Grid Grid.Column="2">
                 <colorpicker:StandardColorPicker x:Name="main" Style="{StaticResource DefaultColorPickerStyle}" />
