@@ -14,7 +14,7 @@ namespace Log2Html
         public MainWindow()
         {
             InitializeComponent();
-            vm.RestoreSettings(_configFilePath);
+            Vm.RestoreSettings(_configFilePath);
 
             // get logger
         }
@@ -24,7 +24,7 @@ namespace Log2Html
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                var info = vm.ConvertFile(files[0], out var logInfo, out var htmlFilePath);
+                var info = Vm.ConvertFile(files[0], out var logInfo, out var htmlFilePath);
             }
         }
 
@@ -36,17 +36,17 @@ namespace Log2Html
 
         private void Save_Settings(object sender, EventArgs e)
         {
-            vm.SaveSettings(_configFilePath);
+            Vm.SaveSettings(_configFilePath);
         }
 
         private void Add_Setting(object sender, EventArgs e)
         {
-            vm.AddSettingItem();
+            Vm.AddSettingItem();
         }
 
         private void MainView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            vm.SaveSettings(_configFilePath);
+            Vm.SaveSettings(_configFilePath);
         }
 
         private void FileNameAlias_TextBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -77,6 +77,18 @@ namespace Log2Html
                     textBox.IsReadOnly = true;
                 }
             }
+        }
+
+        private void Open_InBrowser(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+
+        }
+
+        private void ClickMe(object sender, RoutedEventArgs e)
+        {
+            var menu = sender as MenuItem;
+            Console.WriteLine(menu.Header);
         }
     }
 }
