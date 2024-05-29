@@ -43,13 +43,13 @@ namespace Log2Html.ViewModel
             }
         }
 
-        public ICommand RemoveSettingCommand { get; set; }
+        public ICommand RemoveColorSettingItemCommand { get; set; }
 
-        public ICommand RemoveConvertEntryCommand { get; set; }
+        public ICommand RemoveConvertedEntryCommand { get; set; }
 
-        public ICommand FileAliasChangesCommand { get; set; }
+        public ICommand ConvertedFileAliasChangesCommand { get; set; }
 
-        public ICommand OpenHtmlCommand { get; set; }
+        public ICommand OpenHtmlInBrowserCommand { get; set; }
 
         public ICommand MenuAboutCommand { get; set; }
 
@@ -76,10 +76,10 @@ namespace Log2Html.ViewModel
         public MainViewVM()
         {
             ColorSettings = new ObservableCollection<ColorSettingItem>();
-            RemoveSettingCommand = new RelayCommand(RemoveSettingItem);
-            RemoveConvertEntryCommand = new RelayCommand(RemoveConvertedEntryItem);
-            FileAliasChangesCommand = new RelayCommand(FileAliasChanged);
-            OpenHtmlCommand = new RelayCommand(OpenFileInBrowser);
+            RemoveColorSettingItemCommand = new RelayCommand(RemoveSettingItem);
+            RemoveConvertedEntryCommand = new RelayCommand(RemoveConvertedEntryItem);
+            ConvertedFileAliasChangesCommand = new RelayCommand(FileAliasChanged);
+            OpenHtmlInBrowserCommand = new RelayCommand(OpenFileInBrowser);
             EntryItemOpenOriginalFileCommand = new RelayCommand(OpenFileInFileExplorer);
             EntryItemDeleteCommand = new RelayCommand(DeleteEntryItem);
             MenuAboutCommand = new RelayCommand(ShowAbout);
@@ -352,12 +352,10 @@ namespace Log2Html.ViewModel
         private void OpenFileInFileExplorer(object filePath)
         {
             var path = (string)filePath;
-            if (!string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path)) return;
+            if (File.Exists(path))
             {
-                if (File.Exists(path))
-                {
-                    System.Diagnostics.Process.Start("explorer.exe", "/select," + filePath);
-                }
+                Process.Start("explorer.exe", "/select," + filePath);
             }
         }
 

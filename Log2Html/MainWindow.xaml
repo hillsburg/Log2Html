@@ -15,17 +15,18 @@
     MinWidth="1200"
     MinHeight="800"
     AllowDrop="True"
+    Name="MainViewWindow"
     Closing="MainView_Closing"
     Drop="File_Drop"
     Icon="pack://application:,,,/Assets/jibini.png"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
-        <converter:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />
+        <converter:Rgb2SolidColorBrushConverter x:Key="Rgb2SolidColorBrushConverter" />
         <converter:LogLevelEnum2ColorRgbConverter x:Key="Enum2ColorRgbConverter" />
     </Window.Resources>
     <Window.DataContext>
-        <viewmodel:MainViewVM x:Name="vm" x:FieldModifier="public" />
+        <viewmodel:MainViewVM x:Name="Vm" x:FieldModifier="public" />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
@@ -93,7 +94,7 @@
                     Background="Orange" />
 
                 <ItemsControl
-                    x:Name="logItemsControl"
+                    x:Name="LogItemsControl"
                     Grid.Row="2"
                     ItemsSource="{Binding LogItemList}"
                     VirtualizingPanel.VirtualizationMode="Recycling">
@@ -152,109 +153,112 @@
                         Click="Save_Settings"
                         Content="Save" />
                 </Grid>
-
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding ColorSettings}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border
-                                Margin="3"
-                                BorderBrush="#FFDDD9D9"
-                                BorderThickness="0.5"
-                                CornerRadius="3">
-                                <Grid Margin="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50" />
-                                        <ColumnDefinition Width="0.6*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="0.5*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="30" />
-                                        <ColumnDefinition Width="*" />
-                                        <!--<ColumnDefinition Width="0.4*" />-->
-                                    </Grid.ColumnDefinitions>
+                <DataGrid Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          ItemsSource="{Binding ColorSettings}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Key Word" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Color RGB" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding ColorRgb, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Preview" Width="0.8*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
                                     <Button
-                                        Grid.Column="0"
-                                        Command="{Binding DataContext.RemoveSettingCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                        CommandParameter="{Binding SettingId}"
-                                        Content="X" />
-                                    <Label
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Content="Key word"
-                                        FontWeight="Bold" />
-
-                                    <TextBox
-                                        Grid.Column="2"
-                                        Margin="5"
-                                        FontWeight="Bold"
-                                        Text="{Binding Key}" />
-                                    <Label
-                                        Grid.Column="3"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Content="Color"
-                                        FontWeight="Bold" />
-
-                                    <TextBox
-                                        Grid.Column="4"
-                                        Margin="5"
-                                        FontWeight="Bold"
-                                        Text="{Binding ColorRgb}" />
-
-                                    <Button
-                                        Grid.Column="5"
                                         Width="30"
                                         Height="30"
-                                        Background="{Binding ColorRgb, Converter={StaticResource ColorToSolidColorBrushConverter}}" />
-
+                                        Background="{Binding ColorRgb, Converter={StaticResource Rgb2SolidColorBrushConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Apply for All Line" Width="*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
                                     <CheckBox
-                                        Grid.Column="6"
-                                        Margin="5"
-                                        Content="Apply for all line"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
                                         IsChecked="{Binding ShouldApplyForAllLine}" />
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="ItemsControl">
-                            <ScrollViewer CanContentScroll="True" Focusable="False">
-                                <ItemsPresenter />
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                </ItemsControl>
-
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Ignore Case" Width="*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        IsChecked="{Binding ShouldIgnoreCase}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Delete" Width="0.8*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Command="{Binding DataContext.RemoveColorSettingItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding SettingId}"
+                                        Content="X" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
                 <Grid Grid.Row="2" Margin="3,20,0,3">
                     <TextBlock
                         FontSize="12"
                         FontWeight="Bold"
                         Text="Records" />
                 </Grid>
-
-                <!--
                 <DataGrid
                     Grid.Row="3"
                     AutoGenerateColumns="False"
+                    Name="RecordsDataGrid"
                     CanUserAddRows="False"
+                    Tag="{Binding ElementName=MainViewWindow, Path=DataContext}"
                     ItemsSource="{Binding ConvertEntries}">
-                    <DataGrid.ItemContainerStyle>
+                    <!--<DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
+                            <Setter Property="Tag" Value="{Binding ElementName=MainViewWindow, Path=DataContext}"/>
                             <Setter Property="ContextMenu">
                                 <Setter.Value>
                                     <ContextMenu>
                                         <MenuItem
-                                            Command="{Binding DataContext.EntryItemOpenOriginalFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                            Command="{Binding DataContext.EntryItemOpenOriginalFileCommand, ElementName=MainViewWindow}"
                                             CommandParameter="{Binding OriginalFilePath}"
                                             Header="Open original file in explorer" />
                                         <MenuItem
-                                            Command="{Binding DataContext.OpenHtmlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                            Command="{Binding DataContext.OpenHtmlInBrowserCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"
                                             CommandParameter="{Binding ConvertedFilePath}"
                                             Header="Open converted file in default browser" />
                                         <MenuItem
@@ -265,9 +269,9 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </DataGrid.ItemContainerStyle>
+                    </DataGrid.RowStyle>-->
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="File Name">
+                        <DataGridTemplateColumn Header="File Name" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBox
@@ -276,38 +280,48 @@
                                         Text="{Binding FileNameAlias, Mode=TwoWay}">
                                         <b:Interaction.Triggers>
                                             <b:EventTrigger EventName="LostFocus">
-                                                <b:InvokeCommandAction Command="{Binding DataContext.FileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding Id}" />
+                                                <b:InvokeCommandAction Command="{Binding DataContext.ConvertedFileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding Id}" />
                                             </b:EventTrigger>
                                             <b:EventTrigger EventName="KeyDown">
-                                                <b:InvokeCommandAction Command="{Binding DataContext.FileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding Id}" />
+                                                <b:InvokeCommandAction Command="{Binding DataContext.ConvertedFileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding Id}" />
                                             </b:EventTrigger>
                                         </b:Interaction.Triggers>
                                     </TextBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Convert Date">
+                        <DataGridTemplateColumn Header="Convert Date" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ConvertDate, Mode=TwoWay}" />
+                                    <TextBlock Text="{Binding ConvertDate}" VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn Header="" Width="*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button
-                                        Command="{Binding DataContext.OpenHtmlCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        Command="{Binding DataContext.OpenHtmlInBrowserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                         CommandParameter="{Binding ConvertedFilePath}"
                                         Content="Open" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn Header="Delete" Width="0.6*">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button
-                                        Command="{Binding DataContext.EntryItemDeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        Command="{Binding DataContext.RemoveConvertedEntryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                         CommandParameter="{Binding Id}"
                                         Content="X" />
                                 </DataTemplate>
@@ -315,91 +329,6 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                -->
-                <ItemsControl
-                    Grid.Row="3"
-                    Margin="0,10,0,0"
-                    ItemsSource="{Binding ConvertEntries}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="ItemsControl">
-                            <ScrollViewer CanContentScroll="True">
-                                <ItemsPresenter />
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border
-                                Margin="3"
-                                BorderBrush="#FFDDD9D9"
-                                BorderThickness="0.5"
-                                CornerRadius="3">
-                                <Grid Margin="3,3,3,3" VerticalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox
-                                        Grid.Column="0"
-                                        MinWidth="200"
-                                        VerticalAlignment="Center"
-                                        FontWeight="Bold"
-                                        IsReadOnly="{Binding IsReadOnly}"
-                                        MouseDoubleClick="FileNameAlias_TextBox_MouseDoubleClick"
-                                        Text="{Binding FileNameAlias, Mode=TwoWay}">
-                                        <b:Interaction.Triggers>
-                                            <b:EventTrigger EventName="LostFocus">
-                                                <b:InvokeCommandAction Command="{Binding DataContext.FileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Id}" />
-                                            </b:EventTrigger>
-                                            <b:EventTrigger EventName="KeyDown">
-                                                <b:InvokeCommandAction Command="{Binding DataContext.FileAliasChangesCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Id}" />
-                                            </b:EventTrigger>
-                                        </b:Interaction.Triggers>
-                                    </TextBox>
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        MinWidth="160"
-                                        Margin="10,0,10,0"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding ConvertDate}">
-                                        <TextBlock.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem
-                                                    Command="{Binding DataContext.EntryItemOpenOriginalFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                                                    CommandParameter="{Binding OriginalFilePath}"
-                                                    Header="Open original file path" />
-                                                <MenuItem
-                                                    Command="{Binding DataContext.EntryItemOpenOriginalFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                                                    CommandParameter="{Binding ConvertedFilePath}"
-                                                    Header="Open converted file path" />
-                                            </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
-                                    <Button
-                                        Grid.Column="2"
-                                        Width="100"
-                                        Margin="10,0,10,0"
-                                        Command="{Binding DataContext.OpenHtmlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                        CommandParameter="{Binding ConvertedFilePath}"
-                                        Content="Open" />
-                                    <Button
-                                        Grid.Column="3"
-                                        Width="60"
-                                        Command="{Binding DataContext.RemoveConvertEntryCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                        CommandParameter="{Binding Id}"
-                                        Content="X" />
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
             </Grid>
             <Grid Grid.Column="2">
                 <colorpicker:StandardColorPicker x:Name="main" Style="{StaticResource DefaultColorPickerStyle}" />

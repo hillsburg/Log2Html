@@ -4,8 +4,10 @@ using System.Windows.Media;
 
 namespace Log2Html.Converter
 {
-    public class ColorToSolidColorBrushConverter : IValueConverter
+    public class Rgb2SolidColorBrushConverter : IValueConverter
     {
+        public SolidColorBrush DefaultValue { get; } = Brushes.Transparent;
+
         /// <summary>
         /// Convert RGB hex string to color
         /// </summary>
@@ -20,13 +22,25 @@ namespace Log2Html.Converter
             {
                 return DefaultValue;
             }
+
             if (value is string rgbStr)
             {
-                if (string.IsNullOrEmpty(rgbStr))
+                try
+                {
+                    if (string.IsNullOrEmpty(rgbStr))
+                    {
+                        return DefaultValue;
+                    }
+
+                    Color color = (Color)ColorConverter.ConvertFromString(rgbStr);
+                    return new SolidColorBrush(color);
+                }
+                catch (Exception e)
+                {
                     return DefaultValue;
-                Color color = (Color)ColorConverter.ConvertFromString(rgbStr);
-                return new SolidColorBrush(color);
+                }
             }
+
             return DefaultValue;
         }
 
@@ -35,7 +49,5 @@ namespace Log2Html.Converter
             var brush = value as SolidColorBrush;
             return brush?.Color.ToString();
         }
-
-        public SolidColorBrush DefaultValue { get; } = Brushes.Fuchsia;
     }
 }
