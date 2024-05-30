@@ -228,6 +228,18 @@ namespace Log2Html.ViewModel
                 return new ReturnInfo(false);
             }
 
+            if (ColorSettings.Count == 0)
+            {
+                AddLog(LogLevel.Error, "Color setting is empty", LogDestination.DispalyAndLogFile);
+                return new ReturnInfo(false);
+            }
+
+            if (ColorSettings.All(x => string.IsNullOrEmpty(x.Key)))
+            {
+                AddLog(LogLevel.Error, "Key word of color setting is empty", LogDestination.DispalyAndLogFile);
+                return new ReturnInfo(false);
+            }
+
             var newFileName = DateTime.Now.ToString("_yyyyMMddHHmmss") + ".html";
             htmlFilePath = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath) + newFileName);
             CurrentConvertedFilePath = htmlFilePath;
@@ -278,6 +290,11 @@ namespace Log2Html.ViewModel
                             {
                                 tempLine = $"<p>{tempLine.Replace(key, $"<span style=\"color: {htmlCssColor};\">{key}</span>")}</p>";
                             }
+                        }
+                        else
+                        {
+                            // strings are immutable, all replace operations above do not change the original string line
+                            tempLine = $"<p>{line}</p>";
                         }
                     }
 

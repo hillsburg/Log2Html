@@ -14,13 +14,13 @@ namespace Log2Html.Converter
             switch (colorEnum)
             {
                 case LogLevel.Error:
-                    return Colors.Red;
+                    return new SolidColorBrush(Colors.Red);
                 case LogLevel.Warning:
-                    return Colors.DarkOrange;
+                    return new SolidColorBrush(Colors.DarkOrange);
                 case LogLevel.Debug:
-                    return Colors.SaddleBrown;
+                    return new SolidColorBrush(Colors.SaddleBrown);
                 case LogLevel.Info:
-                    return Colors.Black;
+                    return new SolidColorBrush(Colors.Black);
                 default:
                     throw new InvalidOperationException("Unknown color");
             }
