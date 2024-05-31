@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Log2Html.Dao;
+using Log2Html.Dao.Model;
+using Log2Html.Enum;
+using Log2Html.Model;
+using Log2Html.Utils;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,12 +14,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using Log2Html.Dao;
-using Log2Html.Dao.Model;
-using Log2Html.Enum;
-using Log2Html.Model;
-using Log2Html.Utils;
-using Newtonsoft.Json;
 
 namespace Log2Html.ViewModel
 {
@@ -255,7 +255,7 @@ namespace Log2Html.ViewModel
                     // replace < and > to avoid html tag
                     tempLine = tempLine.Replace("<", "&lt;");
                     tempLine = tempLine.Replace(">", "&gt;");
-
+                    bool isMatched = false;
                     foreach (var item in ColorSettings)
                     {
                         if (string.IsNullOrEmpty(item.Key) || string.IsNullOrWhiteSpace(item.Key))
@@ -271,6 +271,7 @@ namespace Log2Html.ViewModel
                         var htmlCssColor = item.ColorRgb.StartsWith("#") && item.ColorRgb.Length > 8 ? "#" + item.ColorRgb.Substring(3) + item.ColorRgb.Substring(1, 2) : item.ColorRgb;
                         if (tempLine.Contains(key))
                         {
+                            isMatched = true;
                             if (item.ShouldApplyForAllLine)
                             {
                                 if (tempLine.StartsWith("<p"))
@@ -291,11 +292,13 @@ namespace Log2Html.ViewModel
                                 tempLine = $"<p>{tempLine.Replace(key, $"<span style=\"color: {htmlCssColor};\">{key}</span>")}</p>";
                             }
                         }
-                        else
-                        {
-                            // strings are immutable, all replace operations above do not change the original string line
-                            tempLine = $"<p>{line}</p>";
-                        }
+                    }
+
+                    // if no key word is matched, add <p> tag
+                    if (!isMatched)
+                    {
+                        // strings are immutable, all replace operations above do not change the original string line
+                        tempLine = $"<p>{line}</p>";
                     }
 
                     newLines.Add(tempLine);
