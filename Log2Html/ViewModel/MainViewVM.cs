@@ -1,10 +1,4 @@
-﻿using Log2Html.Dao;
-using Log2Html.Dao.Model;
-using Log2Html.Enum;
-using Log2Html.Model;
-using Log2Html.Utils;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -14,6 +8,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using Log2Html.Dao;
+using Log2Html.Dao.Model;
+using Log2Html.Enum;
+using Log2Html.Model;
+using Log2Html.Utils;
+using Newtonsoft.Json;
 
 namespace Log2Html.ViewModel
 {
@@ -271,7 +271,11 @@ namespace Log2Html.ViewModel
                         var htmlCssColor = item.ColorRgb.StartsWith("#") && item.ColorRgb.Length > 8 ? "#" + item.ColorRgb.Substring(3) + item.ColorRgb.Substring(1, 2) : item.ColorRgb;
                         if (tempLine.Contains(key))
                         {
-                            isMatched = true;
+                            if (!isMatched)
+                            {
+                                isMatched = true;
+                            }
+
                             if (item.ShouldApplyForAllLine)
                             {
                                 if (tempLine.StartsWith("<p"))
