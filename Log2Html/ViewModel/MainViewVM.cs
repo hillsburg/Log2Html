@@ -21,7 +21,7 @@ namespace Log2Html.ViewModel
     {
         private DbUtils _dbHelper;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -71,8 +71,19 @@ namespace Log2Html.ViewModel
 
         private List<ColorSettingItem> _colorSettings = new List<ColorSettingItem>();
 
+        /// <summary>
+        /// Color settings items
+        /// </summary>
         public ObservableCollection<ColorSettingItem> ColorSettings { get; set; } = new ObservableCollection<ColorSettingItem>();
+
+        /// <summary>
+        /// Converted entries
+        /// </summary>
         public ObservableCollection<ConvertEntry> ConvertEntries { get; set; } = new ObservableCollection<ConvertEntry>();
+
+        /// <summary>
+        /// ctor
+        /// </summary>
         public MainViewVM()
         {
             ColorSettings = new ObservableCollection<ColorSettingItem>();

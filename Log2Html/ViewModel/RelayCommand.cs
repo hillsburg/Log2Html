@@ -5,74 +5,73 @@ namespace Log2Html.ViewModel
 {
     internal class RelayCommand : ICommand
     {
-        private Action<object> execute;
+        private Action<object?> _execute;
 
-        private Predicate<object> canExecute;
+        private Predicate<object?> _canExecute;
 
-        private event EventHandler CanExecuteChangedInternal;
+        private event EventHandler? _canExecuteChangedInternal;
 
-        public RelayCommand(Action<object> execute) : this(execute, DefaultCanExecute)
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="execute">Execute action</param>
+        public RelayCommand(Action<object?> execute) : this(execute, DefaultCanExecute)
         {
         }
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="execute">execute action</param>
+        /// <param name="canExecute">canExecute action</param>
+        /// <exception cref="ArgumentNullException">ArgumentNullException when the action is null</exception>
+        public RelayCommand(Action<object?> execute, Predicate<object?> canExecute)
         {
-            if (execute == null)
-            {
-                throw new ArgumentNullException("execute");
-            }
-
-            if (canExecute == null)
-            {
-                throw new ArgumentNullException("canExecute");
-            }
-
-            this.execute = execute;
-            this.canExecute = canExecute;
+            this._execute = execute ?? throw new ArgumentNullException("execute");
+            this._canExecute = canExecute ?? throw new ArgumentNullException("canExecute");
         }
 
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add
             {
                 CommandManager.RequerySuggested += value;
-                this.CanExecuteChangedInternal += value;
+                this._canExecuteChangedInternal += value;
             }
 
             remove
             {
                 CommandManager.RequerySuggested -= value;
-                this.CanExecuteChangedInternal -= value;
+                this._canExecuteChangedInternal -= value;
             }
         }
 
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
-            return this.canExecute != null && this.canExecute(parameter);
+            return this._canExecute != null && this._canExecute(parameter);
         }
 
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
-            this.execute(parameter);
+            this._execute(parameter);
         }
 
         public void OnCanExecuteChanged()
         {
-            EventHandler handler = this.CanExecuteChangedInternal;
+            EventHandler? handler = this._canExecuteChangedInternal;
             if (handler != null)
             {
-                //DispatcherHelper.BeginInvokeOnUIThread(() => handler.Invoke(this, EventArgs.Empty));
                 handler.Invoke(this, EventArgs.Empty);
             }
         }
 
         public void Destroy()
         {
-            this.canExecute = _ => false;
-            this.execute = _ => { return; };
+            this._canExecute = _ => false;
+            this._execute = _ => { return; };
         }
 
-        private static bool DefaultCanExecute(object parameter)
+        private static bool DefaultCanExecute(object? parameter)
         {
             return true;
         }
