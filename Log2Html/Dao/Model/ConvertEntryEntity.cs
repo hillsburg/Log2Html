@@ -1,25 +1,25 @@
-﻿using HeartLog.SimpleDbTool.Attribute;
-using HeartLog.SimpleDbTool.Enum;
-using HeartLog.SimpleDbTool.Interface;
-
+﻿using SqlSugar;
 namespace Log2Html.Dao.Model
 {
-    [Table("t_convert_entry")]
-    class ConvertEntryEntity : ISimpleOrm
+    [SugarTable("t_convert_entry")]
+    class ConvertEntryEntity
     {
-        [Column("id", false, true, ColumnType.TEXT)]
+        [SugarColumn(IsPrimaryKey = true, ColumnName = "id")]
         public string Id { get; set; }
 
-        [Column("file_name_alias", ColumnType.TEXT)]
+        [SugarColumn(ColumnName = "file_name_alias")]
         public string FileNameAlias { get; set; }
 
-        [Column("original_file_path", ColumnType.TEXT)]
+
+        [SugarColumn(ColumnName = "original_file_path")]
         public string OriginalFilePath { get; set; }
 
-        [Column("converted_file_path", ColumnType.TEXT)]
+
+        [SugarColumn(ColumnName = "converted_file_path")]
         public string ConvertedFilePath { get; set; }
 
-        [Column("convert_date", ColumnType.TEXT)]
+
+        [SugarColumn(ColumnName = "convert_date")]
         public string ConvertDate { get; set; }
     }
 }

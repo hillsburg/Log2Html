@@ -9,13 +9,13 @@
     xmlns:local="clr-namespace:Log2Html"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodel="clr-namespace:Log2Html.ViewModel"
+    Name="MainViewWindow"
     Title="Log2Html"
     Width="1200"
     Height="800"
     MinWidth="1200"
     MinHeight="800"
     AllowDrop="True"
-    Name="MainViewWindow"
     Closing="MainView_Closing"
     Drop="File_Drop"
     Icon="pack://application:,,,/Assets/jibini.png"
@@ -119,7 +119,10 @@
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.Template>
                         <ControlTemplate TargetType="ItemsControl">
-                            <ScrollViewer CanContentScroll="True" Focusable="False" HorizontalScrollBarVisibility="Visible">
+                            <ScrollViewer
+                                CanContentScroll="True"
+                                Focusable="False"
+                                HorizontalScrollBarVisibility="Visible">
                                 <ItemsPresenter />
                             </ScrollViewer>
                         </ControlTemplate>
@@ -153,26 +156,47 @@
                         Click="Save_Settings"
                         Content="Save" />
                 </Grid>
-                <DataGrid Grid.Row="1"
-                          AutoGenerateColumns="False"
-                          CanUserAddRows="False"
-                          ItemsSource="{Binding ColorSettings}">
+                <DataGrid
+                    Grid.Row="1"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    ItemsSource="{Binding ColorSettings}">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Key Words" Width="*">
+                        <DataGridTemplateColumn Width="*" Header="Key Words">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBox Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Color or RGB" Width="*">
+                        <DataGridTemplateColumn Width="*" Header="Color or RGB">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding ColorRgb, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Button
+                                            Padding="0"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Command="{Binding DataContext.PasteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                            CommandParameter="{Binding SettingId}"
+                                            Content="&#xe7e3;"
+                                            FontFamily="{StaticResource IconFont}"
+                                            FontSize="23"
+                                            Foreground="Gray"
+                                            ToolTip="Paste RGB" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            Margin="5,0,0,0"
+                                            Text="{Binding ColorRgb, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Preview" Width="0.8*">
+                        <DataGridTemplateColumn Width="0.8*" Header="Preview">
                             <DataGridTemplateColumn.HeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -187,7 +211,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Apply for all Line" Width="*">
+                        <DataGridTemplateColumn Width="*" Header="Apply for all Line">
                             <DataGridTemplateColumn.HeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -196,8 +220,8 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <CheckBox
-                                        VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
                                         IsChecked="{Binding ShouldApplyForAllLine, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -217,7 +241,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>-->
-                        <DataGridTemplateColumn Header="Delete" Width="0.8*">
+                        <DataGridTemplateColumn Width="0.8*" Header="Delete">
                             <DataGridTemplateColumn.HeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -241,12 +265,12 @@
                         Text="Records" />
                 </Grid>
                 <DataGrid
+                    Name="RecordsDataGrid"
                     Grid.Row="3"
                     AutoGenerateColumns="False"
-                    Name="RecordsDataGrid"
                     CanUserAddRows="False"
-                    Tag="{Binding ElementName=MainViewWindow, Path=DataContext}"
-                    ItemsSource="{Binding ConvertEntries}">
+                    ItemsSource="{Binding ConvertEntries}"
+                    Tag="{Binding ElementName=MainViewWindow, Path=DataContext}">
                     <!--<DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Setter Property="Tag" Value="{Binding ElementName=MainViewWindow, Path=DataContext}"/>
@@ -271,7 +295,7 @@
                         </Style>
                     </DataGrid.RowStyle>-->
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="File Name" Width="*">
+                        <DataGridTemplateColumn Width="*" Header="File Name">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBox
@@ -290,14 +314,14 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Convert Date" Width="*">
+                        <DataGridTemplateColumn Width="*" Header="Convert Date">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ConvertDate}" VerticalAlignment="Center" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding ConvertDate}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="" Width="*">
+                        <DataGridTemplateColumn Width="*" Header="">
                             <DataGridTemplateColumn.HeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -312,7 +336,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Delete" Width="0.6*">
+                        <DataGridTemplateColumn Width="0.6*" Header="Delete">
                             <DataGridTemplateColumn.HeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />

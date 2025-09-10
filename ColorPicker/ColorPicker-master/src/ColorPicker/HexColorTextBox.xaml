@@ -21,6 +21,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30" />
+        </Grid.ColumnDefinitions>
         <TextBox
             x:Name="textbox"
             Width="70"
@@ -33,5 +37,20 @@
                     SelectOnMouseClick="False" />
             </i:Interaction.Behaviors>
         </TextBox>
+        <TextBlock
+            Name="copyTextBlock"
+            Grid.Column="1"
+            Margin="5,0,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            Cursor="Hand"
+            FontFamily="{StaticResource IconFont}"
+            FontSize="13"
+            Foreground="White"
+            MouseLeftButtonDown="Copy_MouseLeftButtonDown"
+            TextWrapping="Wrap"
+            ToolTip="Copy to clipboard">
+            <Run>&#xe63d;</Run>
+        </TextBlock>
     </Grid>
 </local:PickerControlBase>

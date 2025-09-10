@@ -26,5 +26,11 @@ namespace ColorPicker
             //InvalidateProperty(SelectedColorProperty);
             //Color.RaisePropertyChanged(nameof(Color.RGB_R));
         }
+
+        private void Copy_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // copy to clipboard
+            Clipboard.SetText(textbox.Text);
+        }
     }
 }
