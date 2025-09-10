@@ -56,11 +56,11 @@
 		<PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="NLog" Version="5.3.2" />
+		<PackageReference Include="SqlSugarCore" Version="5.1.4.189-preview07" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\ColorPicker\ColorPicker-master\src\ColorPicker\ColorPicker.csproj" />
-		<ProjectReference Include="..\HeartLog.DbTool\HeartLog.SimpleDbTool.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

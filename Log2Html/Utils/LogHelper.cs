@@ -21,16 +21,18 @@ namespace Log2Html.Utils
             }
         }
 
-        public static void AddLog(Log2Html.Enum.LogLevel logLevel, string message)
+        public static void AddLog(LogLevel logLevel, string message)
         {
             switch (logLevel)
             {
                 case LogLevel.Error:
                     _logger.Error(message); break;
-                case LogLevel.Warning:
+                case LogLevel.Warn:
                     _logger.Warn(message); break;
-                case LogLevel.Info:
-                    _logger.Info(message); break;
+                case LogLevel.Trace:
+                    _logger.Trace(message); break;
+                case LogLevel.Fatal:
+                    _logger.Trace(message); break;
                 case LogLevel.Debug:
                     _logger.Debug(message); break;
                 default:

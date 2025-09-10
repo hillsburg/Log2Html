@@ -15,7 +15,7 @@ namespace Log2Html.Converter
             {
                 case LogLevel.Error:
                     return new SolidColorBrush(Colors.Red);
-                case LogLevel.Warning:
+                case LogLevel.Warn:
                     return new SolidColorBrush(Colors.DarkOrange);
                 case LogLevel.Debug:
                     return new SolidColorBrush(Colors.SaddleBrown);
@@ -33,7 +33,7 @@ namespace Log2Html.Converter
             if (color == Colors.Red)
                 return LogLevel.Error;
             if (color == Colors.DarkOrange)
-                return LogLevel.Warning;
+                return LogLevel.Warn;
             if (color == Colors.SaddleBrown)
                 return LogLevel.Debug;
             if (color == Colors.Black)

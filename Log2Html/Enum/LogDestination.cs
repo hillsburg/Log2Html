@@ -3,9 +3,7 @@
     public enum LogDestination
     {
         OnlyDispaly,
-
         OnlyLogFile,
-
         DispalyAndLogFile,
     }
 }

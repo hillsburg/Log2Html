@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using Log2Html.Dao;
@@ -53,6 +54,8 @@ namespace Log2Html.ViewModel
 
         public ICommand MenuAboutCommand { get; set; }
 
+        public ICommand PasteCommand { get; set; }
+
         public ICommand EntryItemDeleteCommand { get; set; }
 
         public ICommand EntryItemOpenOriginalFileCommand { get; set; }
@@ -94,10 +97,11 @@ namespace Log2Html.ViewModel
             EntryItemOpenOriginalFileCommand = new RelayCommand(OpenFileInFileExplorer);
             EntryItemDeleteCommand = new RelayCommand(DeleteEntryItem);
             MenuAboutCommand = new RelayCommand(ShowAbout);
+            PasteCommand = new RelayCommand(PasteRgb);
 
-            _dbHelper = new DbUtils();
-            _dbHelper.Init("Data Source=Log2Html.db");
-            var convertEntries = _dbHelper.DbHelper.DbOperation.Query<ConvertEntryEntity>(null);
+            _dbHelper = new DbUtils("Data Source=Log2Html.db", SqlSugar.DbType.Sqlite);
+
+            var convertEntries = _dbHelper.Db.Queryable<ConvertEntryEntity>().ToList();
             convertEntries = convertEntries.OrderByDescending(x => x.ConvertDate).ToList();
             foreach (var item in convertEntries)
             {
@@ -144,7 +148,7 @@ namespace Log2Html.ViewModel
                     return;
                 }
 
-                _dbHelper.DbHelper.DbOperation.Delete<ConvertEntryEntity>(new ConvertEntryEntity() { Id = id });
+                _dbHelper.Db.Deleteable(new ConvertEntryEntity() { Id = id });
                 ConvertEntries.Remove(item);
             }
         }
@@ -176,7 +180,7 @@ namespace Log2Html.ViewModel
                 ConvertDate = item.ConvertDate
             };
 
-            _dbHelper.DbHelper.DbOperation.Update<ConvertEntryEntity>(dbModel);
+            _dbHelper.Db.Updateable<ConvertEntryEntity>(dbModel);
 
             item.IsReadOnly = true;
         }
@@ -337,7 +341,7 @@ namespace Log2Html.ViewModel
 
                 var fileName = Path.GetFileNameWithoutExtension(htmlFilePath);
                 // DB Operation
-                _dbHelper.DbHelper.DbOperation.Insert<ConvertEntryEntity>(new ConvertEntryEntity()
+                _dbHelper.Db.Insertable(new ConvertEntryEntity()
                 {
                     Id = id,
                     OriginalFilePath = filePath,
@@ -416,6 +420,30 @@ namespace Log2Html.ViewModel
             about.Show();
         }
 
+        private void PasteRgb(object settingItemId)
+        {
+            if (settingItemId == null)
+            {
+                return;
+            }
+
+            var rgbRegEx = new Regex(@"^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$");
+            var rgbStr = Clipboard.GetText();
+            if (string.IsNullOrEmpty(rgbStr))
+            {
+                return;
+            }
+
+            if (!rgbRegEx.Match(rgbStr).Success)
+            {
+                AddLog(LogLevel.Error, $"\"{rgbStr}\" is not in the correct rgb format", LogDestination.DispalyAndLogFile);
+                return;
+            }
+
+            var guid = (string)settingItemId;
+            ColorSettings.First(x => x.SettingId == guid).ColorRgb = rgbStr;
+        }
+
         private void AddLog(LogLevel logLevel, string message, LogDestination destination)
         {
             switch (destination)
@@ -423,7 +451,7 @@ namespace Log2Html.ViewModel
                 case LogDestination.DispalyAndLogFile:
                     AddLog(new LogItem()
                     {
-                        TimeStamp = DateTime.Now.ToShortTimeString(),
+                        TimeStamp = DateTime.Now.ToString(),
                         LogLevel = logLevel,
                         LogContent = message,
                         Destination = destination

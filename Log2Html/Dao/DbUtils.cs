@@ -1,29 +1,49 @@
-﻿using HeartLog.SimpleDbTool;
-using Log2Html.Model;
+﻿using System;
+using SqlSugar;
 
 namespace Log2Html.Dao
 {
-    internal class DbUtils
+    public class DbUtils
     {
-        private SimpleDbHelper _dbHelper;
+        private string _connStr;
+        private DbType _dbType;
 
         /// <summary>
         /// DB helper
         /// </summary>
-        public SimpleDbHelper DbHelper
+        public SqlSugarClient Db
         {
-            get { return _dbHelper; }
-            set { _dbHelper = value; }
+            get => new SqlSugarClient(
+                new ConnectionConfig()
+                {
+                    ConnectionString = _connStr,
+                    DbType = _dbType,
+                    IsAutoCloseConnection = true,
+                    InitKeyType = InitKeyType.Attribute
+                },
+                db =>
+                {
+                    db.Aop.OnLogExecuting = (sql, pars) =>
+                    {
+                        // Log SQL
+                        Console.WriteLine(UtilMethods.GetNativeSql(sql, pars));
+                    };
+                    db.Aop.OnError = (exp) =>
+                    {
+                        // Log error
+                        // Console.WriteLine(exp.Message);
+                    };
+                });
         }
 
-        public DbUtils()
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="connStr"></param>
+        public DbUtils(string connStr, DbType dbType)
         {
-        }
-
-        public ReturnInfo Init(string connStr)
-        {
-            _dbHelper = new SimpleDbHelper(HeartLog.SimpleDbTool.Enum.DatabaseType.Sqlite, connStr);
-            return new ReturnInfo(true);
+            _connStr = connStr;
+            _dbType = dbType;
         }
     }
 }

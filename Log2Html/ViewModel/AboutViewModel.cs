@@ -8,7 +8,7 @@ namespace Log2Html.ViewModel
 {
     public class AboutViewModel : INotifyPropertyChanged
     {
-        public string AppVersion { get; } = "1.0.6";
+        public string AppVersion { get; } = "1.0.7";
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
