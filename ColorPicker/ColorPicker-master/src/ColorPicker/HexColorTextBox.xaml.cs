@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ColorPicker
@@ -30,7 +31,25 @@ namespace ColorPicker
         private void Copy_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             // copy to clipboard
-            Clipboard.SetText(textbox.Text);
+            int retries = 0;
+            bool isSuccess = false;
+            while (retries++ < 5)
+            {
+                try
+                {
+                    Clipboard.SetText(textbox.Text);
+                    isSuccess = true;
+                    break;
+                }
+                catch
+                {
+                    Thread.Sleep(100);
+                }
+            }
+            if (!isSuccess)
+            {
+                MessageBox.Show("Failed to copy to clipboard. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

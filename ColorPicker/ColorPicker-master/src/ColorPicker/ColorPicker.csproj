@@ -26,6 +26,7 @@
 		<RepositoryType>git</RepositoryType>
 		<SignAssembly>True</SignAssembly>
 		<AssemblyOriginatorKeyFile>sgkey.snk</AssemblyOriginatorKeyFile>
+		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>

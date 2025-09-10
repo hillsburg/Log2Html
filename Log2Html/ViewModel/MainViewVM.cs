@@ -431,6 +431,7 @@ namespace Log2Html.ViewModel
             var rgbStr = Clipboard.GetText();
             if (string.IsNullOrEmpty(rgbStr))
             {
+                AddLog(LogLevel.Error, $"Empty rgb. Check your clipboard", LogDestination.DispalyAndLogFile);
                 return;
             }
 
